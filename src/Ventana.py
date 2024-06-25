@@ -96,6 +96,8 @@ class TabFuncion:
                 #boton = BotonAsiento(fila,c,texto)
                 #boton.setBoton(ttk.Button(self.tab_ver_asiento, text=texto, command=lambda f=fila, c=c: self.mostrar_asiento(f, c)).grid(column=c, row=f+1, columnspan=1, padx=3, pady=3, sticky=tk.W+tk.E))
                 
+
+                ##Arreglar esta parte que solamente carga 1 dato.
                 
                 if self.sala.mostrar_info_asiento(fila, c)=="Asiento disponible":
                     ttk.Button(self.tab_ver_asiento, text=texto, style="Disponible.TButton",command=lambda f=fila, c=c: self.mostrar_asiento(f, c)).grid(column=c, row=f+1, columnspan=1, padx=3, pady=3, sticky=tk.W+tk.E)   
