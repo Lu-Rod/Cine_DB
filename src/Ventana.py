@@ -57,6 +57,13 @@ class TabFuncion:
         ttk.Button(self.tab_elegir_funcion, text="Confirmar función", command=self.mostrar_sala).grid(column=0, row=5, columnspan=2, padx=10, pady=10, sticky=tk.W+tk.E)
             
     def setup_tab_ver_asiento(self):
+        s = ttk.Style()
+        s.configure("Disponible.TButton", foreground="#469B40")
+        s.map("Disponible.TButton", foreground=[("active", "#469B40")])
+        
+        s.configure("NoDisponible.TButton", foreground="#ff0000")
+        s.map("NoDisponible.TButton", foreground=[("active", "#ff0000")])
+
         # Configuración de widgets para la pestaña "Ver Asientos"
         
         #aqui se muestran los asientos con los datos que traiga del sql!
@@ -69,25 +76,37 @@ class TabFuncion:
         
         cant_filas = int(self.sala.getCapacidad()/10)
         print(f"capacidad {self.sala.getCapacidad()}  capacidad mod 10 {cant_filas}")
+        #lista_botones=[]
 
         for f in range(cant_filas):
             print(f)
             for c in range(10):
+                #if c==0:
+                #    lista_botones.append([])  
+
                 print(f,c)
                 if f == 0:
                     fila = "A"
-                    texto = f"A{c}"
                 elif f == 1:
                     fila = "B"
-                    texto = f"B{c}"
                 else:
                     fila = "C"
-                    texto = f"C{c}"
-                ttk.Button(self.tab_ver_asiento, text=texto, command=lambda: self.mostrar_asiento(fila, c)).grid(column=c, row=f+1, columnspan=1, padx=3, pady=3, sticky=tk.W+tk.E)
-    
+                
+                texto = f"{fila}{c}"
+                #boton = BotonAsiento(fila,c,texto)
+                #boton.setBoton(ttk.Button(self.tab_ver_asiento, text=texto, command=lambda f=fila, c=c: self.mostrar_asiento(f, c)).grid(column=c, row=f+1, columnspan=1, padx=3, pady=3, sticky=tk.W+tk.E))
+                
+                
+                if self.sala.mostrar_info_asiento(fila, c)=="Asiento disponible":
+                    ttk.Button(self.tab_ver_asiento, text=texto, style="Disponible.TButton",command=lambda f=fila, c=c: self.mostrar_asiento(f, c)).grid(column=c, row=f+1, columnspan=1, padx=3, pady=3, sticky=tk.W+tk.E)   
+                else: 
+                    ttk.Button(self.tab_ver_asiento, text=texto, style="NoDisponible.TButton",command=lambda f=fila, c=c: self.mostrar_asiento(f, c)).grid(column=c, row=f+1, columnspan=1, padx=3, pady=3, sticky=tk.W+tk.E)
+                
+                #lista_botones[f].append(boton)
+
 
     def mostrar_asiento(self, fila, numero):
-        info = self.sala.mostrar_info_asiento(fila, numero)
+        info = f"{fila} y {numero} "+self.sala.mostrar_info_asiento(fila, numero)
         messagebox.showinfo("Info Asiento", info)
 
 
@@ -116,7 +135,7 @@ class BotonAsiento:
     def __init__(self, fila, numero, texto):
         self.fila = fila
         self.numero = numero
-        self.titulo = titulo
+        self.texto = texto
         self.boton = None
     
     #FILA
@@ -135,7 +154,14 @@ class BotonAsiento:
 
     #Texto
     def setTexto(self, texto):
-        self.fila = fila
+        self.texto = texto
         
     def getTexto(self):
         return self.texto
+
+#BOTOON
+    def setBoton(self, boton):
+        self.boton = boton
+
+    def getBoton(self):
+        return self.boton

@@ -80,7 +80,10 @@ class Sala:
         for asiento in self.getAsientos():
             print(f"{fila} == {asiento.getFila()}) & ({numero} == {asiento.getNumero()}")
             if (fila == asiento.getFila()) & (numero == asiento.getNumero()):
-                info = "Asiento vendido"
+                info = f"Asiento vendido a {asiento.getUsuario()}\n El dia {asiento.getFecha_Compra()}\n A ${asiento.getPrecio()}"
+
+            else:
+                info = "Asiento disponible"
 
         return info
 
